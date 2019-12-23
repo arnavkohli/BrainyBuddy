@@ -4,9 +4,9 @@ from .models import EssayQ
 class EssayQForm(forms.ModelForm):
     class Meta:
         model = EssayQ
-        fields = ('body', 'answer', )
+        fields = ('body', )
         widgets = {
-        	'body' : forms.TextInput(attrs={'placeholder':'Question Body'})
+        	'body' : forms.Textarea()
         }
         labels = {
         	'body' : False,

@@ -10,6 +10,7 @@ class MCQ(models.Model):
 	body = models.CharField(max_length=255, verbose_name='Question (MCQ) Body')
 	#img = models.ImageField(upload_to='images/', null=True, blank=True)
 
+	@property	
 	def type(self):
 		return self.__class__.__name__
 
