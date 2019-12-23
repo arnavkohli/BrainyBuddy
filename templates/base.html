@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+      <title>Base Template</title>
+      <style type="text/css">
+        body {
+          font-family: 'Avenir Next';
+        }
+      </style>
+
+        {% block base_head %}{% endblock %}
+    </head>
+    <body>
+      <div class='container'>
+        {% if messages %}
+      <div class="alert alert-success messages">
+          {% for message in messages %}
+          <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+              {{ message }}<br/>
+          </span>
+          {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">BrainyBuddy</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/edit/{{ request.user.username }}">Edit Account Info</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <a class="nav-link" href="/logout/">Logout</a>
+      </div>
+    </nav>
+    {% endblock %}
+    {% block jumbotron %}
+    {% endblock %}
+    {% block content %}{% endblock %}
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript">{% block javascript %}{% endblock %}</script>
+    </body>
+  </html>

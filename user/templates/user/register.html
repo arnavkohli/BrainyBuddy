@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">BrainyBuddy</a>
+</nav>
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1 class="display-6">Register</h1>
+    <form method='post' novalidate autocomplete="off"> {% csrf_token %}
+      <div class="form-group">
+        {{ form|crispy }}
+      </div>
+      <button type='submit' class='btn btn-primary'>Submit</button>
+    </form>
+
+    <span>
+      <a href="/login">Already registered? Login!</a>
+    </span>
+  </div>
+
+{% endblock %}
