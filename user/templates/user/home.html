@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block jumbotron %}
+<div class="jumbotron">
+  <h1 class="display-4">Welcome, {{ request.user.username }}!</h1>
+  <p class="lead">You are logged in as a 
+    {% if request.user.is_tutor %}
+      tutor.
+    {% else %}
+      student.
+    {% endif %}
+  </p>
+  	{% if request.user.is_tutor %}
+	  <a href="/quiz/createQuiz/" class='btn btn-primary'>Create Quiz</a>
+	{% else %}
+	  <a href="#" class='btn btn-primary'>Take Quiz</a>
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+  {% if request.user.is_tutor %}
+    <div class="container">
+      <div class="row">
+        <h1 class="display-5">Your Quizzes</h1>
+      </div>
+      <div class="row">
+        {% if not your_quizzes %}
+          <h6 class="display-6">You have not created any quizzes.</h6>
+        {% else %}
+          {% for quiz in your_quizzes %}
+            <div class="col-3 card">
+              <div class="card-body">
+                <h4 class="card-title">{{ quiz.name }}</h4>
+                <h6 class="display-6">Questions: {{ quiz.get_num_questions }}</h6>
+                <a href="/quiz/editQuiz/{{ quiz.id }}">Edit</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-6">
+
+				<form method='post' validate autocomplete="off"> {% csrf_token %}
+			      <div class="form-group p-2">
+			        {{ quiz_form|crispy }}
+			        <button type='submit' class='btn btn-primary' name='saveQuiz' onclick="return confirm('Are you sure you want to save this quiz?')">Save Quiz</button>
+			      </div>
+			    </form>
+
+
+			    <div class="container">
+			      	{% for q in added_questions %}
+			      		<div class="row p-1">
+			      			<div class="col-8">
+			      				<h4 class="display-6">Q{{ forloop.counter }}. {{ q.body }}</h4>
+			      			</div>
+			      			<div class="col-2">
+			      				<form method='post' >{% csrf_token %}
+			      					<button value='{{ q.type }} {{ q.id }}' name='removeQuestion' class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this question?')">Remove</button>
+			      				</form>
+			      			</div>
+			      			<div class="col-2">
+			      				<form method='post' >{% csrf_token %}
+			      					<button value='{{ q.type }} {{ q.id }}' name='editQuestion' class="btn btn-primary">Edit</button>
+			      				</form>
+			      			</div>
+			      		</div>
+			      	{% endfor %}
+			      </div>
+			    <form method="post"> {% csrf_token %}
+			    	<div class="form-group p-2">
+			        <button class='btn btn-danger' name='deleteQuiz' onclick="return confirm('Are you sure you want to delete this quiz?')">Delete Quiz</button>
+			      	</div>
+			    </form>
+
+			</div>
+			<div class="col-6">
+				<div class="row p-2">
+					<div class="col-2">
+						
+						<button id='mcq-btn' style="display: {{ editing|yesno:'None, block' }};" class="btn btn-primary {{ mcq|yesno:'active' }}" name='mcq' onclick="return type_clicked(this.id)"> 
+							MCQ
+						</button>
+						
+					</div>
+					<div class="col-3">
+						
+						<button id='torf-btn' style="display: {{ editing|yesno:'None, block' }};" class="btn btn-primary {{ torfq|yesno:'active'}}" name='torf' onclick="return type_clicked(this.id)"> 
+							True Or False
+						</button>
+						
+					</div>
+					<div class="col-2">
+						
+						<button id='essay-btn' style="display: {{ editing|yesno:'None, block' }};" class="btn btn-primary" name='essay' onclick="return type_clicked(this.id)"> 
+							Essay
+						</button>
+						
+					</div>
+				</div>
+				<form id='mcq-form' method='post' autocomplete="off" style="display: {{ mcq|yesno:'block,None' }};"> {% csrf_token %}
+			      	<div class="form-group p-2">
+			      		<div class="row">
+			      			<div class="col-12">
+			      				{{ question_form|crispy }}
+			      			</div>
+			      		</div>
+			      		<div class="row">
+			      			<div class="col-12">
+			      				{{ answer_set_form|crispy }}
+			      			</div>
+			      		</div>
+			      
+			      	</div>
+			      {% if editing %}
+			      	<button value="{{ question_type }} {{ question_id }}" type='submit' name='saveChanges' class='btn btn-primary'>Save changes</button>
+			      {% else %}
+			      	<button value="" type='submit' name='saveQuestion' class='btn btn-primary'>Save question</button>
+			      {% endif %}
+			    </form>	
+			    <form id='torf-form' method='post' autocomplete="off" style="display: {{ torfq|yesno:'block,None' }};";"> {% csrf_token %}
+			    	<div class="form-group p-2">
+			      		<div class="row">
+			      			<div class="col-12">
+			      				{{ torfq_form|crispy }}
+			      			</div>
+			      		</div>
+			      	</div>
+			      	{% if editing %}
+				      	<button value="{{ question_type }} {{ question_id }}" type='submit' name='saveChanges' class='btn btn-primary'>Save changes</button>
+				    {% else %}
+				      	<button type='submit' name='saveTorFQ' class='btn btn-primary'>Save question</button>
+				    {% endif %}
+			    </form>	
+			    <form id='essay-form' method='post' autocomplete="off" style="display: {{ essayq|yesno:'block,None' }};"> {% csrf_token %}
+			    	<div class="form-group p-2">
+			      		<div class="row">
+			      			<div class="col-12">
+			      				{{ essayq_form|crispy }}
+			      			</div>
+			      		</div>
+			      	</div>
+			      	{% if editing %}
+				      	<button value="{{ question_type }} {{ question_id }}" type='submit' name='saveChanges' class='btn btn-primary'>Save changes</button>
+				    {% else %}
+				      	<button type='submit' name='saveEssayQ' class='btn btn-primary'>Save question</button>
+				    {% endif %}
+			    </form>	
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascript %}
+
+	function type_clicked(eyed){
+		if (eyed == 'mcq-btn'){
+			console.log('mcq');
+			$('#mcq-btn').addClass('active');
+			$('#mcq-form').css('display', 'block');
+
+			$('#torf-btn').removeClass('active');
+			$('#torf-form').css('display', 'None');
+
+			$('#essay-btn').removeClass('active');
+			$('#essay-form').css('display', 'None');
+		}
+		else if (eyed == 'torf-btn'){
+			console.log('torf');
+			$('#torf-btn').addClass('active');
+			$('#torf-form').css('display', 'block');
+
+			$('#mcq-btn').removeClass('active');
+			$('#mcq-form').css('display', 'None');
+
+			$('#essay-btn').removeClass('active');
+			$('#essay-form').css('display', 'None');
+		}
+		else if (eyed == 'essay-btn'){
+			console.log('essay');
+			$('#essay-btn').addClass('active');
+			$('#essay-form').css('display', 'block');
+
+			$('#mcq-btn').removeClass('active');
+			$('#mcq-form').css('display', 'None');
+
+			$('#torf-btn').removeClass('active');
+			$('#torf-form').css('display', 'None');
+		}
+	};
+{% endblock %}
