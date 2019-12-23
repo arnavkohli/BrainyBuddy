@@ -11,5 +11,6 @@ class TorFQ(models.Model):
 	is_true = models.BooleanField(verbose_name='Tick if True')
 	#img = models.ImageField(upload_to='images/', null=True, blank=True)
 
+	@property	
 	def type(self):
 		return self.__class__.__name__

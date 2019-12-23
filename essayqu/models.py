@@ -7,9 +7,9 @@ class EssayQ(models.Model):
 		Quiz,
 		on_delete=models.CASCADE,
 	)
-	body = models.CharField(max_length=255, verbose_name='Question (TorF) Body')
-	answer = models.TextField(max_length=2000)
+	body = models.CharField(max_length=1000, verbose_name='Question (Essay) Body')
 	#img = models.ImageField(upload_to='images/', null=True, blank=True)
 
+	@property	
 	def type(self):
 		return self.__class__.__name__
