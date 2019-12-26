@@ -151,6 +151,7 @@ def QuizEditView(request, quiz_id):
 	quiz = Quiz.objects.get(id=quiz_id)
 	if request.user.is_tutor:
 		context = {}
+		context['quiz'] = quiz
 		context['editing'] = False
 		context['quiz_form'] = QuizEditForm(instance=quiz)
 		context['question_form'] = MCQForm()

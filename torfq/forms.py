@@ -4,7 +4,7 @@ from .models import TorFQ
 class TorFQForm(forms.ModelForm):
     class Meta:
         model = TorFQ
-        fields = ('body', 'is_true', )
+        fields = ('body', 'is_true', 'marks',)
         widgets = {
         	'body' : forms.TextInput(attrs={'placeholder':'Question Body'})
         }

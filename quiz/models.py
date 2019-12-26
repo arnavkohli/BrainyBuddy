@@ -18,3 +18,7 @@ class Quiz(models.Model):
 
 	def get_all_questions(self):
 		return list(chain(self.mcq_set.all(), self.torfq_set.all(), self.essayq_set.all()))
+
+	@property
+	def get_marks(self):
+		return sum([q.get_marks for q in self.get_all_questions()])

@@ -33,6 +33,7 @@
               <div class="card-body">
                 <h4 class="card-title">{{ quiz.name }}</h4>
                 <h6 class="display-6">Questions: {{ quiz.get_num_questions }}</h6>
+                <h6 class="display-6">Total Marks: {{ quiz.get_marks }}</h6>
                 <a href="/quiz/editQuiz/{{ quiz.id }}">Edit</a>
               </div>
             </div>

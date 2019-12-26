@@ -14,41 +14,58 @@
 
 
 			    <div class="container">
-			      	{% for q in added_questions %}
-			      		{% if q.type == 'EssayQ' %}
-			      			<div class="row p-1">
-				      			<div class="col-8">
-				      				<h4 class="display-6">Q{{ forloop.counter }}. Essay Type Question</h4>
-				      			</div>
-				      			<div class="col-2">
-				      				<form method='post' >{% csrf_token %}
-				      					<button value='{{ q.type }} {{ q.id }}' name='removeQuestion' class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this question?')">Remove</button>
-				      				</form>
-				      			</div>
-				      			<div class="col-2">
-				      				<form method='post' >{% csrf_token %}
-				      					<button value='{{ q.type }} {{ q.id }}' name='editQuestion' class="btn btn-primary">Edit</button>
-				      				</form>
-				      			</div>
-				      		</div>
-			      		{% else %}
-				      		<div class="row p-1">
-				      			<div class="col-8">
-				      				<h4 class="display-6">Q{{ forloop.counter }}. {{ q.body }}</h4>
-				      			</div>
-				      			<div class="col-2">
-				      				<form method='post' >{% csrf_token %}
-				      					<button value='{{ q.type }} {{ q.id }}' name='removeQuestion' class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this question?')">Remove</button>
-				      				</form>
-				      			</div>
-				      			<div class="col-2">
-				      				<form method='post' >{% csrf_token %}
-				      					<button value='{{ q.type }} {{ q.id }}' name='editQuestion' class="btn btn-primary">Edit</button>
-				      				</form>
-				      			</div>
-				      		</div>
-			      		{% endif %}
-			      	{% endfor %}
+			    	{% if not added_questions %}
+			    	<div class="row p-1">
+			    		<div class="col-12">
+			    			<h6>You have not added any questions.</h6>
+			    		</div>
+			    	</div>
+			    	{% else %}
+				    	{% for q in added_questions %}
+				      		{% if q.type == 'EssayQ' %}
+				      			<div class="row p-1">
+					      			<div class="col-8">
+					      				<h4 class="display-6">Q{{ forloop.counter }}. Essay Type Question</h4>
+					      			</div>
+					      			<div class="col-1 rounded-circle py-2">
+					      				{{ q.get_marks }}m
+			      					</div>
+					      			<div class="col-2">
+					      				<form method='post' >{% csrf_token %}
+					      					<button value='{{ q.type }} {{ q.id }}' name='removeQuestion' class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this question?')">Remove</button>
+					      				</form>
+					      			</div>
+					      			<div class="col-1">
+					      				<form method='post' >{% csrf_token %}
+					      					<button value='{{ q.type }} {{ q.id }}' name='editQuestion' class="btn btn-primary">Edit</button>
+					      				</form>
+					      			</div>
+					      		</div>
+				      		{% else %}
+					      		<div class="row p-1">
+					      			<div class="col-8">
+					      				<h4 class="display-6">Q{{ forloop.counter }}. {{ q.body }}</h4>
+					      			</div>
+					      			<div class="col-1 rounded-circle py-2">
+					      				{{ q.get_marks }}m
+			      					</div>
+					      			<div class="col-2">
+					      				<form method='post' >{% csrf_token %}
+					      					<button value='{{ q.type }} {{ q.id }}' name='removeQuestion' class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this question?')">Remove</button>
+					      				</form>
+					      			</div>
+					      			<div class="col-1">
+					      				<form method='post' >{% csrf_token %}
+					      					<button value='{{ q.type }} {{ q.id }}' name='editQuestion' class="btn btn-primary">Edit</button>
+					      				</form>
+					      			</div>
+					      		</div>
+				      		{% endif %}
+				      	{% endfor %}
+				      	<div class="row p-1">
+				      		Total Marks: {{ quiz.get_marks }}
+				      	</div>
+			    	{% endif %}
 			      </div>
 			    <form method="post"> {% csrf_token %}
 			    	<div class="form-group p-2">

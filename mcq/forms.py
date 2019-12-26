@@ -4,7 +4,7 @@ from .models import MCQ, MCQAnswer
 class MCQForm(forms.ModelForm):
     class Meta:
         model = MCQ
-        fields = ('body',)
+        fields = ('body', 'marks')
         widgets = {
         	'body' : forms.TextInput(attrs={'placeholder':'Question Body'})
         }
