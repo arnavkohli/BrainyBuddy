@@ -22,3 +22,13 @@ class Quiz(models.Model):
 	@property
 	def get_marks(self):
 		return sum([q.get_marks for q in self.get_all_questions()])
+#take quiz
+class QuizAttempt(models.Model):
+	user = models.ForeignKey(
+		User,
+		on_delete=models.CASCADE
+	)
+	quiz = models.ForeignKey(
+		Quiz,
+		on_delete=models.CASCADE
+	)

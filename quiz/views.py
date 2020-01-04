@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 
-from .models import Quiz
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from .models import Quiz, QuizAttempt
 from .forms import QuizEditForm
 
 from mcq.models import MCQ, MCQAnswer
-from mcq.forms import MCQForm, MCQAnswerForm
+from mcq.forms import MCQForm, MCQAnswerForm, MCQQAttemptForm
 
 from torfq.models import TorFQ
 from torfq.forms import TorFQForm
@@ -186,3 +188,49 @@ def QuizEditView(request, quiz_id):
 				return save_changes(request, quiz_id)
 
 	return render(request, 'quiz/edit.html', context)
+
+def QuizListView(request):
+	quiz_list = Quiz.objects.all()
+	page = request.GET.get('page', 1)
+
+	paginator = Paginator(quiz_list, 10)
+	try:
+		quizzes = paginator.page(page)
+	except PageNotAnInteger:
+		quizzes = paginator.page(1)
+	except EmptyPage:
+		quizzes = paginator.page(paginator.num_pages)
+
+	return render(request, 'quiz/quiz_list.html', { 'quizzes': quizzes })
+
+def QuizTakeView(request, quiz_id):
+	quiz = Quiz.objects.get(id=quiz_id)
+	try:
+		quiz_attempt = QuizAttempt.get(quiz=quiz)
+	except:
+		quiz_attempt = QuizAttempt.objects.create(user=request.user, quiz=quiz)
+
+	questions = quiz.get_all_questions()
+	forms = [MCQQAttemptForm(q) for q in questions]
+
+	mylist = zip(questions, forms)
+
+	page = request.GET.get('page', 1)
+
+	paginator = Paginator(questions, 1)
+	try:
+		question = paginator.page(page)
+	except PageNotAnInteger:
+		question = paginator.page(1)
+	except EmptyPage:
+		question = paginator.page(paginator.num_pages)
+
+
+	return render(request, 'quiz/take_quiz.html', { 'question': question , 'forms' : forms , 'mylist' : mylist})
+
+
+
+
+
+
+

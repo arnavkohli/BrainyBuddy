@@ -13,7 +13,7 @@
   	{% if request.user.is_tutor %}
 	  <a href="/quiz/createQuiz/" class='btn btn-primary'>Create Quiz</a>
 	{% else %}
-	  <a href="#" class='btn btn-primary'>Take Quiz</a>
+	  <a href="/quiz/allQuizzes/" class='btn btn-primary'>Take Quiz</a>
 	{% endif %}
 </div>
 {% endblock %}
