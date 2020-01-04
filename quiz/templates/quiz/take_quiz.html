@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<table class="table table-bordered m-4">
+  <thead>
+    <tr>
+      <th>Question</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for q,f in mylist %}
+      <tr>
+        <td>{{ q.body }}</td>
+      </tr>
+      <tr>
+        {{ f }}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if question.has_other_pages %}
+  <ul class="pagination">
+    {% if question.has_previous %}
+      <li><a href="?page={{ question.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in question.paginator.page_range %}
+      {% if question.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if question.has_next %}
+      <li><a href="?page={{ question.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+{% endblock %}

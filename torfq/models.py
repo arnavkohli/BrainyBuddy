@@ -1,5 +1,6 @@
 from django.db import models
-from quiz.models import Quiz
+from quiz.models import Quiz, QuizAttempt
+# from question.models import Question
 
 # Create your models here.
 class TorFQ(models.Model):
@@ -19,4 +20,12 @@ class TorFQ(models.Model):
 	@property
 	def get_marks(self):
 		return self.marks
+
+#take quiz
+class TorFQAttempt(models.Model):
+	quiz_attempt = models.OneToOneField(
+		QuizAttempt,
+		on_delete=models.CASCADE
+	)
+	answer = models.BooleanField()
 	

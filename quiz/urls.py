@@ -11,10 +11,12 @@ from django.conf.urls import include, url
 # ]
 
 
-from .views import QuizCreateView, QuizEditView
+from .views import QuizCreateView, QuizEditView, QuizListView, QuizTakeView
 
 
 urlpatterns = [
 	url(r'^createQuiz/', QuizCreateView, name='createQuiz'),
 	url(r'^editQuiz/(?P<quiz_id>\d+)/$', QuizEditView, name='editQuiz'),
+	url(r'^allQuizzes/', QuizListView, name='allQuizzes'),
+	url(r'^takeQuiz/(?P<quiz_id>\d+)/$', QuizTakeView, name='takeQuiz')
 ]
